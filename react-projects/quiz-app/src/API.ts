@@ -1,3 +1,5 @@
+import { shuffleQuestions } from './utils';
+
 export type Question = {
   category: string;
   correct_answer: string;
@@ -23,5 +25,9 @@ export const fetchQuestions = async (
   const data = await (await fetch(url)).json();
   return data.results.map((question: Question) => ({
     ...question,
+    answers: shuffleQuestions([
+      ...question.incorrect_answers,
+      question.correct_answer,
+    ]),
   }));
 };
